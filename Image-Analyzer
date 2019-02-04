@@ -1,16 +1,33 @@
 import java.util.ArrayList;
 
 public class Test {
-	public static void main(String[] args) {
-		int[][] Grid = {{0, 0, 0, 0, 0, 0, 0, 0}, 
-						{0, 0, 0, 1, 1, 0, 0, 0},
-						{0, 0, 0, 1, 1, 1, 1, 1},
-						{0, 1, 1, 1, 0, 1, 1, 1},
-						{1, 1, 1, 1, 1, 1, 0, 0},
-						{0, 0, 0, 1, 1, 0, 0, 0},
-						{0, 0, 0, 0, 1, 0, 0, 0},
-						{0, 0, 0, 0, 0, 0, 0, 0}
+	
+	public static int[][] Grid = {{0, 0, 0, 0, 0, 0, 0, 0}, 
+				{0, 0, 0, 1, 1, 0, 0, 0},
+				{0, 0, 0, 1, 1, 1, 1, 1},
+				{0, 1, 1, 1, 1, 1, 1, 1},
+				{1, 1, 1, 1, 1, 1, 0, 0},
+				{0, 0, 0, 1, 1, 0, 0, 0},
+				{0, 0, 0, 0, 1, 0, 0, 0},
+				{0, 0, 0, 0, 0, 0, 0, 0}
 		};
+	static int height = 8;
+	static int width = 8;
+	private static boolean onEdge(int x, int y) {
+		for(int i = x-1; i <= x+1; i++) {
+			for(int j= y-1; j <= y+1; j++) {
+				if (i >= 0 && i < height  && j >= 0 && j < width) {
+					if(Grid[i][j] == 0) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static void main(String[] args) {
+		
 		
 		int[][] temp = Grid.clone();
 		double sum = 1;
@@ -23,48 +40,46 @@ public class Test {
 							System.out.println("(" + i + "," + j + ")");
 							System.out.println("Sum: " + sum);
 							System.out.println();
-							temp[i][j] = 0;
-							if(j != (temp[i].length - 1) && temp[i][j+1] == 1) {
-								sum++;
-								j++;
-							}
-							else if(i != (temp.length - 1) && temp[i+1][j] == 1) {
-								sum++;
-								i++;
-							}
-							else if(j != 0 && temp[i][j-1] == 1) {
-								sum++;
-								j--;
-							}
-							else if(i != 0 && temp[i-1][j] == 1) {
-								sum++;
-								i--;
-							}
-							else if(i != (temp.length - 1) && j != (temp[i].length - 1) && temp[i+1][j+1] == 1) {
-								sum = sum + 1.4;
-								i++;
-								j++;
-							}
-							else if(i != (temp.length - 1) && j != 0 && temp[i+1][j-1] == 1) {
-								sum = sum + 1.4;
-								i++;
-								j--;
-							}
-							else if(i != 0 && j != 0 && temp[i-1][j-1] == 1) {
-								sum = sum + 1.4;
-								i--;
-								j--;
-							}
-							else if(i != 0 && j != (temp[i].length - 1) && temp[i-1][j+1] == 1) {
-								sum = sum + 1.4;
-								i--;
-								j++;
-							}
-							else
-								stillOnes = false;
+							temp[i][j] = -1;
+								if(j != (temp[i].length - 1) && onEdge(i, j+1) && temp[i][j+1] == 1) {
+									sum++;
+									j++;
+								}
+								else if(i != (temp.length - 1) && onEdge(i+1, j) && temp[i+1][j] == 1) {
+									sum++;
+									i++;
+								}
+								else if(j != 0 && onEdge(i, j-1) && temp[i][j-1] == 1) {
+									sum++;
+									j--;
+								}
+								else if(i != 0 && onEdge(i-1, j) && temp[i-1][j] == 1) {
+									sum++;
+									i--;
+								}
+								else if(i != (temp.length - 1) && j != (temp[i].length - 1) && onEdge(i+1, j+1) && temp[i+1][j+1] == 1) {
+									sum = sum + 1.4;
+									i++;
+									j++;
+								}
+								else if(i != (temp.length - 1) && j != 0 && onEdge(i+1, j-1) && temp[i+1][j-1] == 1) {
+									sum = sum + 1.4;
+									i++;
+									j--;
+								}
+								else if(i != 0 && j != 0 && onEdge(i-1, j-1) && temp[i-1][j-1] == 1) {
+									sum = sum + 1.4;
+									i--;
+									j--;
+								}
+								else if(i != 0 && j != (temp[i].length - 1) && onEdge(i-1, j+1) && temp[i-1][j+1] == 1) {
+									sum = sum + 1.4;
+									i--;
+									j++;
+								}
+								else
+									return;
 						}
 					}
 				}
-			}
-	}
-}
+		}
